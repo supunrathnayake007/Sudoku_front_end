@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sudoku Grid</title>
+  <style>
+    .sudoku-grid {
+      display: grid;
+      grid-template-columns: repeat(9, 40px);
+      grid-template-rows: repeat(9, 40px);
+      gap: 1px;
+      width: 365px;
+      border: 2px solid black;
+    }
+
+    .cell {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      width: 100%;
+      height: 100%;
+      border: 1px solid black;
+      box-sizing: border-box;
+      cursor: pointer;
+    }
+
+    .row-divider {
+      border-bottom: 2px solid black;
+      grid-column: 1 / -1;
+    }
+
+    .column-divider {
+      border-right: 2px solid black;
+      grid-row: 1 / -1;
+    }
+  </style>
+</head>
+<body>
+  <div class="sudoku-grid">
+    <div class="cell row-divider">1</div>
+    <div class="cell row-divider">2</div>
+    <div class="cell">3</div>
+    <div class="cell column-divider">4</div>
+    <div class="cell column-divider">5</div>
+    <div class="cell">6</div>
+    <div class="cell row-divider">7</div>
+    <div class="cell row-divider">8</div>
+    <div class="cell">9</div>
+
+    
+    <!-- Repeat the above pattern for the other cells in the first row -->
+
+    <!-- Fill in the rest of the Sudoku grid by repeating the pattern for the remaining rows -->
+  </div>
+
+  
+
+</body>
+</html>
