@@ -6,6 +6,7 @@ function SudokuGrid(props) {
   // 81 objects for each cell in the grid
   const [advanced_sudokuData, setAdvanced_SudokuData] = useState([]);
   const [sudokuName, setSudokuName] = useState("");
+  const [gridMode, setGridMode] = useState("view"); //Modes- "view","create"
   //debugger;
 
   //data populated to "advanced_sudokuData" from Props (includes <input> data)
@@ -30,9 +31,14 @@ function SudokuGrid(props) {
               readOnly = true;
             }
           } else {
-            value = props.sudokuData[i][j];
-            className = "form-control bg-secondary text-light";
-            readOnly = true;
+            if (gridMode === "view") {
+              value = props.sudokuData[i][j];
+              className = "form-control bg-secondary text-light";
+              readOnly = true;
+            } else {
+              className = "form-control";
+              readOnly = false;
+            }
           }
 
           advanced_sudokuDataLines.push(
@@ -67,13 +73,18 @@ function SudokuGrid(props) {
     debugger;
     setAdvanced_SudokuData(props.advanced_sudokuData);
   }, [props.advanced_sudokuData]);
+  useEffect(() => {
+    setGridMode(props.gridMode);
+  }, [props.gridMode]);
 
   const inputOnChange = (value, i, j) => {
     debugger;
     let sudokuData = [...advanced_sudokuData];
     sudokuData[i][j].value = Number(value);
     setAdvanced_SudokuData(sudokuData);
-    props.callback({ advanced_sudokuData: sudokuData });
+    if (gridMode === "create") {
+      props.callback({ advanced_sudokuData: sudokuData });
+    }
   };
 
   return (

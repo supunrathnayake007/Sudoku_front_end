@@ -4,11 +4,14 @@ import SudokuGrid from "./SudokuGrid";
 import SolveSudoku from "./SolveSudoku";
 import NewSudoku from "./NewSudoku";
 
-function SudokuMain() {
+function SudokuMain(props) {
   const [advanced_sudokuData, setAdvanced_SudokuData] = useState([]);
   const [sudokuData, setSudokuData] = useState([]);
   const [sudokuName, setSudokuName] = useState("");
   const [sudokuSolvedData, setSudokuSolvedData] = useState([]);
+  const [gridMode, setGridMode] = useState("view"); //Modes- "view","create"
+  const [showSave, setShowSave] = useState(false);
+  const [apiUrls, setApiUrls] = useState(props.apiUrls);
 
   useEffect(() => {
     //debugger;
@@ -18,10 +21,12 @@ function SudokuMain() {
   }, [sudokuData]);
 
   const updateSudokuData = (params) => {
-    //debugger;
+    debugger;
     setSudokuData(params["sudokuData"]);
     setSudokuName(params["sudokuName"]);
     setSudokuSolvedData(params["sudokuData"]);
+    setGridMode(params["gridMode"]);
+    setShowSave(params["showSave"]);
   };
   const updateSudokuSolvedData = (params) => {
     //debugger;
@@ -31,11 +36,20 @@ function SudokuMain() {
     debugger;
     setAdvanced_SudokuData(params["advanced_sudokuData"]);
     setSudokuName("New Sudoku");
+    setGridMode(params["gridMode"]);
     //setSudokuSolvedData(params["advanced_sudokuData"]);
   };
   const updateStatusfmGrid = (params) => {
     debugger;
-    setAdvanced_SudokuData(params["advanced_sudokuData"]);
+    let sudokuData = [];
+    for (let i = 0; i < 9; i++) {
+      let sudokuDataLines = [];
+      for (let j = 0; j < 9; j++) {
+        sudokuDataLines.push(params["advanced_sudokuData"][i][j].value);
+      }
+      sudokuData.push(sudokuDataLines);
+    }
+    setSudokuData(sudokuData);
   };
 
   return (
@@ -47,18 +61,28 @@ function SudokuMain() {
           sudokuName={sudokuName}
           sudokuSolvedData={sudokuSolvedData}
           advanced_sudokuData={advanced_sudokuData}
+          gridMode={gridMode}
         />
         <div className="col-sm">
           <SolveSudoku
             callback={updateSudokuSolvedData}
             sudokuData={sudokuData}
+            sudokuSolve_Url={apiUrls.sudokuSolve_Url}
           />
-          <NewSudoku callback={newSudokuPressed} sudokuData={sudokuData} />
+          <NewSudoku
+            callback={newSudokuPressed}
+            sudokuData={sudokuData}
+            showSave={showSave}
+            sudokuSave_Url={apiUrls.sudokuSave_Url}
+          />
         </div>
       </div>
 
       <div className="border border-primary p-3 col-sm">
-        <ViewAllSudoku callback={updateSudokuData} />
+        <ViewAllSudoku
+          callback={updateSudokuData}
+          sudokuList_Url={apiUrls.sudokuList_Url}
+        />
       </div>
     </div>
   );

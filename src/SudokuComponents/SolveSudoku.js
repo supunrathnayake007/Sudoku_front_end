@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 
 function SudokuManageNew(props) {
-  const sudokuSolve_Url = "http://192.168.44.15:8080/solve-Sudoku";
-  const sudokuSolve_Url_test = "http://127.0.0.1:5000/solve-Sudoku";
   const [sudokuData, setSudokuData] = useState(null);
   const [sudokuSolvedData, setSudokuSolvedData] = useState(null);
 
@@ -13,7 +11,7 @@ function SudokuManageNew(props) {
       let dataJson = JSON.stringify(sudokuData);
       const asyncPostCall = async () => {
         try {
-          const response = await fetch(sudokuSolve_Url, {
+          const response = await fetch(props.sudokuSolve_Url, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

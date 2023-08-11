@@ -2,13 +2,11 @@ import React, { useState, useEffect } from "react";
 
 function ViewAllSudoku(props) {
   //console.log("sudoku Manager here. line 23");
-  const [data, setData] = useState([]);
-  const sudokuList_Url = "http://192.168.44.15:8080/get-Sudoku";
-  const sudokuList_Url_test = "http://127.0.0.1:5000/get-Sudoku";
-
+  const [data, setData] = useState([]); // sudoku list
   const [sudokuUrl, setSudokuUrl] = useState("");
   const [sudokuData, setSudokuData] = useState(null);
   const [sudokuName, setSudokuName] = useState("");
+  const [gridMode, setGridMode] = useState("view"); //Modes- "view","create"
 
   //get selected sudoku data
   useEffect(() => {
@@ -29,9 +27,9 @@ function ViewAllSudoku(props) {
 
   //send back selected sudoku data
   useEffect(() => {
-    //debugger;
+    debugger;
     if (sudokuData !== null) {
-      props.callback({ sudokuData, sudokuName });
+      props.callback({ sudokuData, sudokuName, gridMode, showSave: false });
     }
   }, [sudokuData]);
 
@@ -39,7 +37,7 @@ function ViewAllSudoku(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(sudokuList_Url);
+        const response = await fetch(props.sudokuList_Url);
         const jsonData = await response.json();
         setData(jsonData); // Update the state with the API response data
       } catch (error) {
@@ -51,8 +49,9 @@ function ViewAllSudoku(props) {
 
   const sudokuNamePressed = (id, name) => {
     // debugger;
-    setSudokuUrl(sudokuList_Url + "/" + id);
+    setSudokuUrl(props.sudokuList_Url + "/" + id);
     setSudokuName(name);
+    setGridMode("view");
   };
 
   return (
