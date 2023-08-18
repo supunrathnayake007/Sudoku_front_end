@@ -2,52 +2,90 @@ import React, { useEffect, useState } from "react";
 
 const NewSudoku = (props) => {
   const [advanced_sudokuData, setAdvanced_SudokuData] = useState([]);
+  const [sudokuData, setSudokuData] = useState([]);
   const [currentData, setCurrentData] = useState(null);
   const [sudokuName, setSudokuName] = useState("");
   const [showSave, setShowSave] = useState(false);
 
   useEffect(() => {
     debugger;
-    props.callback({
-      advanced_sudokuData: advanced_sudokuData,
-      gridMode: "create",
-    });
-  }, [advanced_sudokuData]);
+  }, [currentData]);
+
+  useEffect(() => {
+    if (sudokuData.length !== 0) {
+      debugger;
+      props.callback({
+        sudokuData: sudokuData,
+        sudokuName: sudokuName,
+        gridMode: "create",
+        showSave: showSave,
+      });
+    }
+  }, [sudokuData]);
 
   useEffect(() => {
     debugger;
-    setCurrentData(props.sudokuData);
+    setCurrentData(props.newSudokuData);
     setShowSave(props.showSave);
-  }, [props.sudokuData]);
+  }, [props.newSudokuData]);
   useEffect(() => {
     debugger;
     setShowSave(props.showSave);
   }, [props.showSave]);
+  useEffect(() => {
+    setSudokuName(props.sudokuName);
+  }, [props.sudokuName]);
 
   const newSudokuPressed = () => {
     debugger;
     let sudokuData = [];
     for (let i = 0; i < 9; i++) {
       let advanced_sudokuDataLines = [];
+      let sudokuLine = [];
       for (let j = 0; j < 9; j++) {
-        advanced_sudokuDataLines.push({
-          className: "form-control",
-          type: "number",
-          min: "0",
-          max: "9",
-          value: 0,
-          readOnly: false,
-        });
+        sudokuLine.push(0);
+        // advanced_sudokuDataLines.push({
+        //   className: "form-control",
+        //   type: "number",
+        //   min: "0",
+        //   max: "9",
+        //   value: 0,
+        //   readOnly: false,
+        // });
       }
-      sudokuData.push(advanced_sudokuDataLines);
+      sudokuData.push(sudokuLine);
     }
-    setAdvanced_SudokuData(sudokuData);
+    debugger;
+    //setAdvanced_SudokuData(sudokuData);
+    setSudokuData(sudokuData);
+    setSudokuName("New_Sudoku");
     setShowSave(true);
   };
   const saveButtonPressed = () => {
+    let count = 0;
+    let data_str = "";
+    debugger;
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j < 9; j++) {
+        if (currentData[i][j] > 0) {
+          count++;
+          if (currentData[i][j] !== 0) {
+            data_str =
+              data_str +
+              (i + 1).toString() +
+              (j + 1).toString() +
+              currentData[i][j].toString();
+            if (i !== 8 || j !== 8) {
+              data_str = data_str + ",";
+            }
+          }
+        }
+      }
+    }
+    debugger;
     let dataJson = JSON.stringify({
       sudoku_name: sudokuName,
-      sudoku_data: currentData,
+      sudoku_data: data_str,
     });
     const asyncPostCall = async () => {
       try {
@@ -65,7 +103,9 @@ const NewSudoku = (props) => {
         console.log("Error fetching data:", error);
       }
     };
-    asyncPostCall();
+    if (count >= 17) {
+      asyncPostCall();
+    } else console.log("invalid Sudoku- inputs are less than 17!");
   };
 
   return (
@@ -88,7 +128,11 @@ const NewSudoku = (props) => {
       ) : (
         ""
       )}
-      <p>sudoku data: {currentData}</p>
+      <p>
+        <h3>{sudokuName}</h3>
+      </p>
+      <p>current data: {currentData}</p>
+      {/* <p>sudoku data: {sudokuData}</p> */}
     </div>
   );
 };

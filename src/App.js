@@ -8,7 +8,7 @@ function App() {
   //console.log("App here.");
 
   ///for sudokuMain
-  const api_debug = false; //change to true when debugging the API
+  const api_debug = true; //change to true when debugging the API
   const baseApiUrl = api_debug
     ? "http://127.0.0.1:5000"
     : "http://192.168.44.15:8080";
@@ -21,7 +21,7 @@ function App() {
 
   return (
     <div className="App">
-      <SudokuMain apiUrls={apiUrls} />
+      <SudokuMain apiUrls={apiUrls} developerMode={true} />
     </div>
   );
 }

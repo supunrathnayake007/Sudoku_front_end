@@ -29,7 +29,9 @@ function ViewAllSudoku(props) {
   useEffect(() => {
     debugger;
     if (sudokuData !== null) {
-      props.callback({ sudokuData, sudokuName, gridMode, showSave: false });
+      if (gridMode === "view") {
+        props.callback({ sudokuData, sudokuName, gridMode, showSave: false });
+      }
     }
   }, [sudokuData]);
 
@@ -46,6 +48,12 @@ function ViewAllSudoku(props) {
     };
     fetchData(); // Call the function to fetch data when the component mounts
   }, []);
+  useEffect(() => {
+    setSudokuData(props.sudokuData);
+  }, [props.sudokuData]);
+  useEffect(() => {
+    setGridMode(props.gridMode);
+  }, [props.gridMode]);
 
   const sudokuNamePressed = (id, name) => {
     // debugger;
