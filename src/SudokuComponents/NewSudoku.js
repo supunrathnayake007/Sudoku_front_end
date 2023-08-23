@@ -6,6 +6,9 @@ const NewSudoku = (props) => {
   const [currentData, setCurrentData] = useState(null);
   const [sudokuName, setSudokuName] = useState("");
   const [showSave, setShowSave] = useState(false);
+  // const [sudokuList, setSudokuList] = useState([]);
+  // const [last_sudokuId, setLast_sudokuId] = useState("");
+  const [sudokuCreatedData, setSudokuCreatedData] = useState({});
 
   useEffect(() => {
     debugger;
@@ -96,8 +99,15 @@ const NewSudoku = (props) => {
           },
           body: dataJson,
         });
+        debugger; //for check api Data
         const data = await response.json();
-        //setSudokuSolvedData(data);
+        setSudokuCreatedData({
+          sudokuList: data["sudokuList"],
+          sudokuId: data["sudokuId"],
+          sudokuName: data["sudokuName"],
+        });
+        // setSudokuList(data["sudokuList"]);
+        // setLast_sudokuId(data["sudokuId"]);
       } catch (error) {
         // enter your logic for when there is an error (ex. error toast)
         console.log("Error fetching data:", error);
@@ -107,6 +117,14 @@ const NewSudoku = (props) => {
       asyncPostCall();
     } else console.log("invalid Sudoku- inputs are less than 17!");
   };
+
+  useEffect(() => {
+    props.callback_afterNewSudokuCreated(
+      // sudokuList: sudokuList,
+      // last_sudokuId: last_sudokuId,
+      sudokuCreatedData
+    );
+  }, [sudokuCreatedData]);
 
   return (
     <div>

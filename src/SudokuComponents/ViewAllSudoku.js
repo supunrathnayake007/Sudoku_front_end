@@ -10,7 +10,7 @@ function ViewAllSudoku(props) {
 
   //get selected sudoku data
   useEffect(() => {
-    //debugger;
+    debugger;
     const fetchData = async () => {
       try {
         const response = await fetch(sudokuUrl);
@@ -37,6 +37,7 @@ function ViewAllSudoku(props) {
 
   //get sudoku list
   useEffect(() => {
+    debugger;
     const fetchData = async () => {
       try {
         const response = await fetch(props.sudokuList_Url);
@@ -54,6 +55,22 @@ function ViewAllSudoku(props) {
   useEffect(() => {
     setGridMode(props.gridMode);
   }, [props.gridMode]);
+  // useEffect(() => {
+  //   if (props.sudokuList.length !== 0) {
+  //     setData(props.sudokuList);
+  //   }
+  // }, [props.sudokuList]);
+  useEffect(() => {
+    debugger;
+    if (props.sudokuCreatedData["sudokuList"] !== undefined) {
+      setData(props.sudokuCreatedData["sudokuList"]);
+      setSudokuUrl(
+        props.sudokuList_Url + "/" + props.sudokuCreatedData["sudokuId"]
+      );
+      setSudokuName(props.sudokuCreatedData["sudokuName"]);
+      setGridMode("view");
+    }
+  }, [props.sudokuCreatedData]);
 
   const sudokuNamePressed = (id, name) => {
     // debugger;

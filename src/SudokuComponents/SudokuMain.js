@@ -13,6 +13,10 @@ function SudokuMain(props) {
   const [gridMode, setGridMode] = useState("view"); //Modes- "view","create"
   const [showSave, setShowSave] = useState(false);
   const [apiUrls, setApiUrls] = useState(props.apiUrls);
+  const [sudokuList, setSudokuList] = useState([]);
+  const [last_sudokuId, setLast_sudokuId] = useState("");
+
+  const [sudokuCreatedData, setSudokuCreatedData] = useState({});
 
   useEffect(() => {
     debugger;
@@ -64,6 +68,12 @@ function SudokuMain(props) {
     setSudokuName(params["sudokuName"]);
   };
 
+  const afterNewSudokuCreated = (params) => {
+    setSudokuCreatedData(params);
+    // setSudokuList(params["sudokuList"]);
+    // setLast_sudokuId(params["last_sudokuId"]);
+  };
+
   return (
     <div className="">
       <div className="border border-primary p-3 row">
@@ -85,6 +95,7 @@ function SudokuMain(props) {
           />
           <NewSudoku
             callback={newSudokuPressed}
+            callback_afterNewSudokuCreated={afterNewSudokuCreated}
             newSudokuData={newSudokuData}
             sudokuName={sudokuName}
             showSave={showSave}
@@ -99,6 +110,9 @@ function SudokuMain(props) {
           sudokuList_Url={apiUrls.sudokuList_Url}
           sudokuData={sudokuData}
           gridMode={gridMode}
+          sudokuCreatedData={sudokuCreatedData}
+          // sudokuList={sudokuList}
+          // last_sudokuId={last_sudokuId}
         />
       </div>
     </div>
